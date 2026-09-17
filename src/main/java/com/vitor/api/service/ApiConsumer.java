@@ -4,6 +4,7 @@ import com.vitor.api.config.WeatherApiProperties;
 import com.vitor.api.dto.request.RequestDTO;
 import com.vitor.api.dto.response.DaysDTO;
 import com.vitor.api.dto.response.ResponseDTO;
+import com.vitor.api.exceptions.InvalidRequest;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
@@ -30,8 +31,18 @@ public class ApiConsumer {
                 .build()
                 .toUriString();
 
-        var daysDTO = restClient.get().uri(uri).retrieve().body(DaysDTO.class);
-        var day = daysDTO.days().get(0);
+        var daysDTO = restClient.get()
+                .uri(uri)
+                .retrieve()
+                .body(DaysDTO.class);
+        if(daysDTO.resolvedAddress() == null){throw new InvalidRequest("Could not resolve address");}
+        String resolvedAddress = daysDTO.resolvedAddress().toLowerCase();
+        if(!validateAddress(requestDTO, resolvedAddress)) throw new InvalidRequest("Your address is invalid");
+        var day = daysDTO.days().getFirst();
         return new ResponseDTO(day.maxTemp(), day.minTemp(), day.currentTemp());
+    }
+
+    private static boolean validateAddress(RequestDTO requestDTO, String resolvedAddress) {
+        return resolvedAddress.contains(requestDTO.country().toLowerCase()) && requestDTO.state().contains(resolvedAddress) && requestDTO.state().contains(requestDTO.city());
     }
 }
