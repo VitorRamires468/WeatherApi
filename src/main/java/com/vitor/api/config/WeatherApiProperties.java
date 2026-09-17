@@ -2,7 +2,7 @@ package com.vitor.api.config;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
-@ConfigurationProperties
+@ConfigurationProperties(prefix = "weather.api")
 public class WeatherApiProperties {
     private String key;
     private String url;
