@@ -21,6 +21,6 @@ public class ApiController {
 
     @GetMapping
     public ResponseEntity<ResponseDTO> getWeather(@RequestBody RequestDTO requestDTO) {
-        return ResponseEntity.ok(apiConsumer.consumirApiExterna(requestDTO));
+        return ResponseEntity.ok(apiConsumer.getWeatherApi(requestDTO));
     }
 }

@@ -4,6 +4,7 @@ import com.vitor.api.config.WeatherApiProperties;
 import com.vitor.api.dto.request.RequestDTO;
 import com.vitor.api.dto.response.DaysDTO;
 import com.vitor.api.dto.response.ResponseDTO;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -19,7 +20,8 @@ public class ApiConsumer {
         this.restClient= restClient;
     }
 
-    public ResponseDTO consumirApiExterna(RequestDTO requestDTO) {
+    @Cacheable(value = "weatherCache", key = "#requestDTO.city() + '-' + #requestDTO.state() + '-' + #requestDTO.country()")
+    public ResponseDTO getWeatherApi(RequestDTO requestDTO) {
         String uri = UriComponentsBuilder
                 .fromUriString(weatherApiProperties.getUrl())
                 .pathSegment(requestDTO.city() + ", " + requestDTO.state() + ", " + requestDTO.country())
