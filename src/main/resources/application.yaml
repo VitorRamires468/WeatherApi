@@ -1,0 +1,16 @@
+spring:
+  application:
+    name: api
+
+data:
+  redis:
+    host: ${REDIS_HOST:localhost}
+    port: ${REDIS_PORT:6379}
+    password: ${REDIS_PASSWORD:12345}
+    timeout: 2000ms
+
+weather:
+  api:
+    key: ${API_KEY}
+    url: ${WEATHER_API_URL:https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline}
+    cache-ttl-hours: ${WEATHER_CACHE_TTL_HOURS:12}
