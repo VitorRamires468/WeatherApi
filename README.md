@@ -65,3 +65,7 @@ Você pode defini-las no seu sistema ou configurá-las diretamente na sua IDE (I
 Caso utilize o Docker para rodar o Redis localmente:
 ```bash
 docker run -d --name redis-local -p 6379:6379 redis
+```
+
+### 📄 Licença
+Este projeto é de uso livre para fins de estudo e aprendizado. Projeto feito com base no [ROADMAP](https://roadmap.sh/projects/weather-api-wrapper-service) 
